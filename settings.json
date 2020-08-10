@@ -1,23 +1,14 @@
 {
   "items": [
     {
-      "file": "C:/xampp/htdocs/pruebas-varias/pruebas-nueva.php",
-      "dir": "C:/xampp/htdocs/pruebas-varias/fonts/skud-webfonts",
+      "file": "",
+      "dir": "",
       "exc": {
         "extensions": [],
         "filenames": [],
         "dirnames": []
       }
-    },
-    {
-      "file": "C:/xampp/htdocs/pruebas-varias/test-php-auto-refresh.php",
-      "dir": [
-      ],
-      "exc": {
-        "extensions": [ "html"],
-        "filenames": ["php.php"],
-        "dirnames": ["skud-webfonts"]
-      }
     }
   ]
 }
+
