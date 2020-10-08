@@ -2,7 +2,6 @@
  *
  * @todo add keystroke support to enable/disable
  * @todo implement checkbox hide permanently, show always, show on mouse over
- *
  */
 
 /**
@@ -53,8 +52,8 @@ window.onload = function() {
 //styles for the subcontainer
     parContainer.style = "font-weight:700;font-family:Sans-serif;border-radius:0 0 0px 5px;color:#fff; background-color:#7478AE;height:0px;width:100px; overflow:hidden";
 
-//styles for the main container
-    parMain.style = "height:25px;position:fixed; top:0px;right:0px;";
+//styles for the main container, the z-index attribute is set to a very high value so that no other element can overlap it
+    parMain.style = "height:6px;position:fixed; top:0px;right:0px;z-index:10000000000000;";
 
     /**
      * @todo keep commenting from here
