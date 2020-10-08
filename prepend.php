@@ -1,4 +1,5 @@
 <?php
+
 /**
  *This script will be auto prepended to the php file that the user has requested, and is responsible for registering a function that will be called when the execution of the requested php file finishes. This function, in turn, will inject a javascript to the html outputted in order to enable or disable the auto refresh capability
  */
@@ -7,6 +8,13 @@
  * @todo Create php file with all settings (files to refresh, directories to monitor for each file, whether to show checkbox permanently or on mouse over, or hide it, etc)
  */
 
+// Prevent php auto refresh from executing if php is running from cli
+if (php_sapi_name() == "cli")
+    return;
+
+// check if it's an ajax request, and return if true, because we don't need the auto refresh functionality for scripts other than the main requested php file
+if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+    return;
 
 //Registers a function to be executed after the execution of the main script has finished
 register_shutdown_function(
@@ -24,9 +32,26 @@ register_shutdown_function(
  */
     function () {
 
-        // If the user is running wp-cli, this functionality must not be executed at all
-        if (defined('WP_CLI') && WP_CLI)
+        // this helper function retrieves the response headers calling the php function headers_list() and turns the indexed array returned by that function into an associative array so that is simpler to handle
+            function response_headers()
+            {
+                $arh = array();
+                $headers = headers_list();
+                foreach ($headers as $header) {
+                    // First we make the header lowercase to avoid comparisons returning false due to case-sensitiveness
+                    $header = strtolower($header);
+                    $header = explode(":", $header);
+                    $arh[array_shift($header)] = trim(implode(":", $header));
+                }
+                return $arh;
+            }
+
+        // if the php script requested doensn't generate an html file (for example, it generated a json file) , php auto refresh won't work, so it wouldn't make any sense to inject scripts tags on it. Fist we call the function defined above to obtain an associative array with the response headers. Then we need to check if 'Content-type' header is set and if it doesn't contain 'text/html' as its value. If true, we just return.
+        $response_headers = response_headers();
+        if (isset($response_headers['content-type']) && strpos($response_headers['content-type'], 'text/html') === FALSE)
             return;
+
+
 
         //Obtains the full path to the directory where php auto refresh files were installed
         $refresh_dir = dirname(ini_get('auto_prepend_file'));

@@ -168,7 +168,11 @@ function start_php_ar()
         //assign the item to the variable we will be working with
     }
 
-    $folder_to_watch = $file_to_watch['dir'] ? $file_to_watch['dir'] : dirname($file_to_watch['file']);
+
+    $folders_to_watch = array();
+    $folders_to_watch = $file_to_watch['dir'] ? $file_to_watch['dir'] : array(dirname($file_to_watch['file']));
+
+//    $folders_to_watch = $file_to_watch['dir'] ? $file_to_watch['dir'] : dirname($file_to_watch['file']);
 
 // this will contain an array with keys as file paths and values as last modified time of the respective file
     $array_archivos = array();
@@ -190,10 +194,10 @@ function start_php_ar()
     $settings_last_mod = filemtime($refresh_dir . '/settings.json');
 
 
-    // starts watching recursively files and folders inside $folder_to_watch until the stop_php_ar() function is called and processed
+    // starts watching recursively files and folders inside $folders_to_watch until the stop_php_ar() function is called and processed
     while (!(has_settings_changed() && get_file_settings($file)['enabled'] == false)) {
-
-        watch_dir_files($folder_to_watch);
+        //we use array_map to apply the watch_dir_files function to each folder containin the array $folders_to_watch
+        array_map('watch_dir_files', $folders_to_watch);
 
         sleep(1);
 
