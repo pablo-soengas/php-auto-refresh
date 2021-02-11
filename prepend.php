@@ -21,7 +21,7 @@ register_shutdown_function(
 /**
  * Function to be executed after $current_file execution finishes
  *
- * It will output a script tag at the end of the result of the execution of $current_file, in order to call the javascript file php_ar.js.     *
+ * It will output a script tag at the end of the result of the execution of $current_file, in order to call the javascript file php-ar.js.     *
  * We pass a callback instead of a function name, in order to avoid polluting the global namespace
  *
  *
@@ -87,7 +87,7 @@ register_shutdown_function(
             $enabled = false;
         }
 
-        $script_tag = '<script type="text/javascript" src="' . $refresh_url . '/php_ar.js" data-currentFile="' . $current_file . '" ';
+        $script_tag = '<script type="text/javascript" src="' . $refresh_url . '/php-ar.js" data-currentFile="' . $current_file . '" ';
         //if the file is already enabled for auto refresh in settings.json, add the data-enabled custom attribute to the script tag, so that the javascript called by this script tag knows that
         if (isset($enabled) && $enabled)
             $script_tag .= ' data-enabled ';
